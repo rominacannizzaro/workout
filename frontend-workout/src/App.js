@@ -129,15 +129,17 @@ const App = () => {
         Find a workout log by date:  
         <Filter newSearch={newSearch} handleNewSearch={handleNewSearch} />
       </div>
+      <br></br>
       <h2>Add a new workout log</h2>
         <br></br>
-        <AddNewLogForm  addLog={addLog} newDate={newDate} handleNewDate={handleNewDate} newWorkout={newWorkout} handleNewWorkout={handleNewWorkout}/>
-      <h2>Your workout logs:</h2>
+        <AddNewLogForm  addLog={addLog} newDate={newDate} handleNewDate={handleNewDate} newWorkout={newWorkout} handleNewWorkout={handleNewWorkout} listOfLogs={listOfLogs}/>
+      <div>
         <ul>
           {listOfLogs.filter(log => log.date.toLowerCase().includes(newSearch.toLowerCase())).map(log =>  
             <RenderLog key={log.id} log={log} handleDeleteButton={handleDeleteButton} />
             )} 
         </ul>
+      </div>  
     </div>
   )
 }

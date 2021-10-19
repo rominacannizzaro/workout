@@ -2,6 +2,7 @@ import React from 'react'
 
 
 const AddNewLogForm = ( props ) => {
+  const renderLogsResultsText = () => props.listOfLogs.length === 0 ? 'No logs to show. You have not created any logs yet.' : 'Your logs:'
 
     return (
       <div>
@@ -26,6 +27,8 @@ const AddNewLogForm = ( props ) => {
           <br></br>
           <button type="submit">Add</button>
         </form>
+        <br></br>
+        <h4>{renderLogsResultsText()}</h4>
       </div>
     )
 }
