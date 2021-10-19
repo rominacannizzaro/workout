@@ -5,6 +5,8 @@ import Filter from './components/Filter'
 import logService from './services/logs'
 import Notification from './components/Notification'
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
+
 const App = () => {
   const [ listOfLogs, setListOfLogs ] = useState([])
   const [ newDate, setNewDate ] = useState('')
@@ -128,7 +130,6 @@ const App = () => {
         <Filter newSearch={newSearch} handleNewSearch={handleNewSearch} />
       </div>
       <h2>Add a new workout log</h2>
-        <p>Write your logs always using the same date format type (for example: DD/MM/YYY or Day Month Year) </p>
         <br></br>
         <AddNewLogForm  addLog={addLog} newDate={newDate} handleNewDate={handleNewDate} newWorkout={newWorkout} handleNewWorkout={handleNewWorkout}/>
       <h2>Your workout logs:</h2>
