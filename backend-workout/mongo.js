@@ -24,7 +24,7 @@ log.save().then(result => {
 Log.find({}).then(result => {
       console.log('Workout logs:')
       result.forEach(log => {
-      console.log(log.date + ' ' + person.workout)
+      console.log(log.date + ' ' + log.workout)
   })
   mongoose.connection.close()
 })

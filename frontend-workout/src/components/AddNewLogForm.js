@@ -14,7 +14,7 @@ const AddNewLogForm = ( props ) => {
               placeholder="Select date" 
               type="date" 
               className="form-control"></input>
-            <label for="example">Pick a date...</label>
+            <label htmlFor="example">Pick a date...</label>
             <i className="fas fa-calendar input-prefix"></i>
           </div>
           <br></br>

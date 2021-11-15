@@ -21,4 +21,6 @@ const update = (id, contactObject) => {
     return request.then(response => response.data)
 } 
 
-export default { getAll, create, remove, update }
+const logService = { getAll, create, remove, update }
+
+export default logService
