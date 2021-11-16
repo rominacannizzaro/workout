@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
     },
     name: String,
     passwordHash: String,
-    workouts: [
+    logs: [
         {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Log'

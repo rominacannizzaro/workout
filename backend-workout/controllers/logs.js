@@ -1,8 +1,11 @@
 const logsRouter = require('express').Router()
 const Log = require('../models/log')
+const User = require('../models/user')
 
 logsRouter.get('/', async (request, response) => {
-  const logs = await Log.find({})
+  const logs = await Log.
+    find({}).populate('user', { username: 1, name: 1 })
+    
   response.json(logs)
 })
 
@@ -19,12 +22,18 @@ logsRouter.get('/:id', async (request, response) => {
 logsRouter.post('/', async (request, response) => {
   const body = request.body
 
+  const user = await User.findById(body.userId)
+
   const log = new Log({
       date: body.date,
-      workout: body.workout
+      workout: body.workout,
+      user: user._id
   })
 
   const savedLog = await log.save()
+  user.logs = user.logs.concat(savedLog._id)
+  await user.save()
+
   response.json(savedLog)
 })
 
