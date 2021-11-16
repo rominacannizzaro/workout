@@ -1,4 +1,5 @@
 const Log = require('../models/log')
+const User = require('../models/user')
 
 const initialLogs = [
     {
@@ -24,6 +25,14 @@ const logsInDb = async () => {
     return logs.map(log => log.toJSON())
 }
 
+const usersInDb = async () => {
+    const users = await User.find({})
+    return users.map(u => u.toJSON())
+}
+
 module.exports = {
-    initialLogs, nonExistingId, logsInDb
+    initialLogs, 
+    nonExistingId, 
+    logsInDb,
+    usersInDb,
 }
