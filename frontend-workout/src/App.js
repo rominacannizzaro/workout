@@ -182,6 +182,14 @@ const App = () => {
     </form>
   )
 
+  const handleLogout =  () => {
+    window.localStorage.clear()
+    logService.setToken('')
+    setUser(null)
+    setUsername('')
+    setPassword('')
+  }
+
   return (
     <div>
       <h1>Workout Log App</h1>
@@ -192,6 +200,11 @@ const App = () => {
         loginForm() : 
         <div>
           <p>{user.name} is logged in</p>
+          <div>
+              <button onClick={() => handleLogout()}>
+            Log out
+              </button>
+            </div>
         <h2>Find a workout log by date:</h2>
         <Filter newSearch={newSearch} handleNewSearch={handleNewSearch} />
         <br></br>
