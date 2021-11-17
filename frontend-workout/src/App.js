@@ -27,6 +27,16 @@ const App = () => {
       })
   }, [])
 
+  // If logged-in user's details are found in local storage, save them to the state of the app and to logService
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedWorkoutappUser')
+    if (loggedUserJSON) {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      logService.setToken(user.token)
+    }
+  }, [])
+
   const addLog = (event) => {
     event.preventDefault()
     const logObject = {
@@ -131,6 +141,9 @@ const App = () => {
         username, password,
       })
 
+      window.localStorage.setItem(
+        'loggedWorkoutappUser', JSON.stringify(user)
+      )
       logService.setToken(user.token)
       setUser(user)
       setUsername('')
