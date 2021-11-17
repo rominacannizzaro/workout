@@ -4,6 +4,7 @@ import AddNewLogForm from './components/AddNewLogForm.js'
 import Filter from './components/Filter'
 import logService from './services/logs'
 import Notification from './components/Notification'
+import loginService from './services/login'
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
 
@@ -13,7 +14,9 @@ const App = () => {
   const [ newWorkout, setNewWorkout ] = useState('')
   const [ newSearch, setNewSearch ] = useState('')
   const [ notification, setNotification ] = useState(null)
-
+  const [ username, setUsername ] = useState('')
+  const [ password, setPassword ] = useState('')
+  const [ user, setUser ] = useState(null)
 
   useEffect(() => {
     logService
@@ -120,26 +123,74 @@ const App = () => {
     }
   }
 
+  const handleLogin = async (event) => {
+    event.preventDefault()
+
+    try {
+      const user = await loginService.login({
+        username, password,
+      })
+      setUser(user)
+      setUsername('')
+      setPassword('')
+    } catch (exception) {
+      setNotification('Wrong credentials')
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
+
+  const loginForm = () => (
+    <form onSubmit={handleLogin}>
+      <div>
+        Username: 
+          <input
+            type="text"
+            value={username}
+            name="Username"
+            onChange={({ target }) => setUsername(target.value)}
+          >
+          </input>
+      </div>
+      <div>
+        Password: 
+          <input
+            type="password"
+            value={password}
+            name="Password"
+            onChange={({ target }) => setPassword(target.value)}
+          >
+          </input>
+      </div>
+      <button id='login-button' type="submit">Login</button>
+    </form>
+  )
+
   return (
     <div>
       <h1>Workout Log App</h1>
+
       <Notification message={notification} />
-      <br></br>
-      <div>
-        Find a workout log by date:  
+
+      {user === null ?
+        loginForm() : 
+        <div>
+          <p>{user.name} is logged in</p>
+        <h2>Find a workout log by date:</h2>
         <Filter newSearch={newSearch} handleNewSearch={handleNewSearch} />
-      </div>
-      <br></br>
-      <h2>Add a new workout log</h2>
+        <br></br>
+        <h2>Add a new workout log</h2>
         <br></br>
         <AddNewLogForm  addLog={addLog} newDate={newDate} handleNewDate={handleNewDate} newWorkout={newWorkout} handleNewWorkout={handleNewWorkout} listOfLogs={listOfLogs}/>
-      <div>
+
         <ul>
           {listOfLogs.filter(log => log.date.toLowerCase().includes(newSearch.toLowerCase())).map(log =>  
             <RenderLog key={log.id} log={log} handleDeleteButton={handleDeleteButton} />
             )} 
         </ul>
-      </div>  
+        </div>  
+      }
     </div>
   )
 }
