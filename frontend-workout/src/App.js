@@ -16,7 +16,7 @@ const App = () => {
   const [ notification, setNotification ] = useState(null)
   const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')
-  const [ user, setUser ] = useState(null)
+  const [ user, setUser ] = useState(null)  // If login succeeds, the server response (including token and user details) is saved to 'user'.
 
   useEffect(() => {
     logService
@@ -130,6 +130,8 @@ const App = () => {
       const user = await loginService.login({
         username, password,
       })
+
+      logService.setToken(user.token)
       setUser(user)
       setUsername('')
       setPassword('')
