@@ -29,7 +29,7 @@ const errorHandler = (error, request, response, next) => {
     })
   } else if (error.name === 'TokenExpiredError') {
     return response.status(401).json({
-      error: 'token expired'
+      error: 'Token expired. Please log in again.'
     })
   }
 

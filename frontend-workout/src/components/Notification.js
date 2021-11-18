@@ -18,6 +18,11 @@ const Notification = ({ message }) => {
             <div className='errornotification'>
                 {message}
             </div>
+    )} else if (message.includes('expired')) {
+        return (
+            <div className='errornotification'>
+                {message}
+            </div>
     )} return (
         <div className='successnotification'>
             {message}
