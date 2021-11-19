@@ -198,6 +198,9 @@ const App = () => {
     } catch (error) {
       const validationErrorNotification = error.response.data.error
       const errorMessageValidation = () =>  `${validationErrorNotification}`
+      validationErrorNotification.includes('to be unique') ?  
+      setNotification('This username has already been taken by another user. Please, try another username.') :
+  
       setNotification(errorMessageValidation)
       setTimeout(() => {
         setNotification(null)
