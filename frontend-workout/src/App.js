@@ -5,6 +5,7 @@ import Filter from './components/Filter'
 import logService from './services/logs'
 import Notification from './components/Notification'
 import loginService from './services/login'
+import LoginForm from './components/LoginForm'
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
 
@@ -173,32 +174,6 @@ const App = () => {
     }
   }
 
-  const loginForm = () => (
-    <form onSubmit={handleLogin}>
-      <div>
-        Username: 
-          <input
-            type="text"
-            value={username}
-            name="Username"
-            onChange={({ target }) => setUsername(target.value)}
-          >
-          </input>
-      </div>
-      <div>
-        Password: 
-          <input
-            type="password"
-            value={password}
-            name="Password"
-            onChange={({ target }) => setPassword(target.value)}
-          >
-          </input>
-      </div>
-      <button id='login-button' type="submit">Login</button>
-    </form>
-  )
-
   const handleLogout =  () => {
     window.localStorage.clear()
     logService.setToken('')
@@ -214,7 +189,13 @@ const App = () => {
       <Notification message={notification} />
 
       {user === null ?
-        loginForm() : 
+        <LoginForm 
+          handleLogin={handleLogin}
+          username={username}
+          setUsername={setUsername}
+          password={password}
+          setPassword={setPassword}
+        /> :  
         <div>
           <p>{user.name} is logged in</p>
           <div>
@@ -225,7 +206,7 @@ const App = () => {
         <h2>Find a workout log by date:</h2>
         <Filter newSearch={newSearch} handleNewSearch={handleNewSearch} />
         <br></br>
-        <h2>Add a new workout log</h2>
+        <h2>Add a new workout log:</h2>
         <br></br>
         <AddNewLogForm  addLog={addLog} newDate={newDate} handleNewDate={handleNewDate} newWorkout={newWorkout} handleNewWorkout={handleNewWorkout} listOfLogs={listOfLogs}/>
 
