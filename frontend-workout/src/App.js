@@ -6,6 +6,8 @@ import logService from './services/logs'
 import Notification from './components/Notification'
 import loginService from './services/login'
 import LoginForm from './components/LoginForm'
+import RegisterNewUser from './components/RegisterNewUser'
+import registrationService from './services/registerNewUser'
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"></link>
 
@@ -18,6 +20,10 @@ const App = () => {
   const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ user, setUser ] = useState(null)  // If login succeeds, the server response (including token and user details) is saved to 'user'.
+
+  const [ newUsername, setNewUsername ] = useState('')
+  const [ newPassword, setNewPassword ] = useState('')
+  const [ newName, setNewName ] = useState('')
    
   // If logged-in user's details are found in local storage, save them to the state of the app and to logService
    useEffect(() => {
@@ -174,6 +180,31 @@ const App = () => {
     }
   }
 
+  const handleRegisterNewUser = async (event) => {
+    event.preventDefault()
+
+    try {
+      const user = await registrationService.register({
+        newUsername, newName, newPassword,
+      })
+
+      setNotification('You have successfully registered! Please, log in.')
+      setTimeout(() => {
+          setNotification(null)
+      }, 3000)
+      setNewUsername('')
+      setNewName('')
+      setNewPassword('')
+    } catch (error) {
+      const validationErrorNotification = error.response.data.error
+      const errorMessageValidation = () =>  `${validationErrorNotification}`
+      setNotification(errorMessageValidation)
+      setTimeout(() => {
+        setNotification(null)
+      }, 5000)
+    }
+  }
+
   const handleLogout =  () => {
     window.localStorage.clear()
     logService.setToken('')
@@ -185,17 +216,33 @@ const App = () => {
   return (
     <div>
       <h1>Workout Log App</h1>
+      <br></br>
 
       <Notification message={notification} />
 
       {user === null ?
+        <div>
+        <h2>Already a user? Please, log in:</h2>
         <LoginForm 
           handleLogin={handleLogin}
           username={username}
           setUsername={setUsername}
           password={password}
           setPassword={setPassword}
-        /> :  
+        />
+        <br></br>
+        <h2>Not a user yet? Please, create your account:</h2>
+        <RegisterNewUser  
+          handleRegisterNewUser={handleRegisterNewUser}
+          newUsername={newUsername}
+          setNewUsername={setNewUsername}
+          newPassword={newPassword}
+          setNewPassword={setNewPassword}
+          newName={newName}
+          setNewName={setNewName}
+        /> 
+        </div>
+        :  
         <div>
           <p>{user.name} is logged in</p>
           <div>

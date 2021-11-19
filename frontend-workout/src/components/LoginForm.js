@@ -28,6 +28,7 @@ const LoginForm = ({
           >
           </input>
       </div>
+      <br></br>
       <button id='login-button' type="submit">Login</button>
     </form>
   )

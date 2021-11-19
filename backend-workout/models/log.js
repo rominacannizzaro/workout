@@ -1,22 +1,18 @@
 const mongoose = require('mongoose')
-const uniqueValidator = require('mongoose-unique-validator')
 
 const logSchema = new mongoose.Schema({
     date: { 
         type: String, 
-        required: true, 
-        unique: true, 
-        minLength: 4 },
+        required: true},
     workout: { 
         type: String, 
         required: true, 
-        minLength: 4 },
+        minLength: 3 },
     user: { 
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     }
 })
-logSchema.plugin(uniqueValidator, { runValidators: true, context: 'query' });  
 
 logSchema.set('toJSON', {                          
     transform: (document, returnedObject) => {
