@@ -8,7 +8,11 @@ const setToken = newToken => {
 }
 
 const getAll = () => {
-    const request = axios.get(baseUrl)
+    // include the token in the request header before making the request to backend
+    const config = {
+        headers: { Authorization: token },
+    }
+    const request = axios.get(baseUrl, config)
     return request.then(response => response.data)
 }
 

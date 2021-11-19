@@ -17,18 +17,9 @@ const App = () => {
   const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')
   const [ user, setUser ] = useState(null)  // If login succeeds, the server response (including token and user details) is saved to 'user'.
-
-  useEffect(() => {
-    logService
-      .getAll()
-      .then(response => {
-        setListOfLogs(response)
-        console.log(response)
-      })
-  }, [])
-
+   
   // If logged-in user's details are found in local storage, save them to the state of the app and to logService
-  useEffect(() => {
+   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedWorkoutappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
@@ -36,6 +27,25 @@ const App = () => {
       logService.setToken(user.token)
     }
   }, [])
+
+  useEffect(() => {
+    if (user) {
+    logService
+      .getAll()
+      .then(response => {
+        setListOfLogs(response)
+      })
+      .catch(error => {
+        console.log(error.response.data)
+        const validationErrorNotification = error.response.data.error
+        const errorMessageValidation = () =>  `${validationErrorNotification}`
+        setNotification(errorMessageValidation)
+        setTimeout(() => {
+          setNotification(null)
+        }, 5000)
+      })
+    }
+  }, [user])
 
   const addLog = (event) => {
     event.preventDefault()
@@ -144,8 +154,15 @@ const App = () => {
       window.localStorage.setItem(
         'loggedWorkoutappUser', JSON.stringify(user)
       )
-      logService.setToken(user.token)
       setUser(user)
+      logService.setToken(user.token)
+
+      logService
+      .getAll()
+      .then(response => {
+        setListOfLogs(response)
+      })
+
       setUsername('')
       setPassword('')
     } catch (exception) {

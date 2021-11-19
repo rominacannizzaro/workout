@@ -3,12 +3,29 @@ const Log = require('../models/log')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
 
-logsRouter.get('/', async (request, response) => {
-  const logs = await Log.
-    find({}).populate('user', { username: 1, name: 1 })
+const getTokenFromRequest = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
+  return authorization.substring(7)
+  }
+  return null
+}
 
-  response.json(logs)
-})
+const getUserFromRequest = async (request) => {
+  const token = await getTokenFromRequest(request)  
+  const decodedToken = jwt.verify(token, process.env.SECRET)
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+  const user = await User.findById(decodedToken.id)
+  return user
+}
+
+logsRouter.get('/', async (request, response) => {
+  const user = await getUserFromRequest(request)
+  const loggedInUserLogs = await Log.find({ "user": {_id: user._id }})
+  response.json(loggedInUserLogs)
+  })
 
 logsRouter.get('/:id', async (request, response) => {
   const log = await Log.findById(request.params.id)
@@ -19,22 +36,9 @@ logsRouter.get('/:id', async (request, response) => {
   }
 })
 
-const getTokenFrom = request => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
-
 logsRouter.post('/', async (request, response) => {
   const body = request.body
-  const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
-  }
-  const user = await User.findById(decodedToken.id)
+  const user = await getUserFromRequest(request)
 
   const log = new Log({
       date: body.date,
