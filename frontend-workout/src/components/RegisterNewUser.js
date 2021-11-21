@@ -16,7 +16,7 @@ const RegisterNewUser = ({
         type="text"
         className="form-control"
         value={newUsername}
-        id="newUsername"
+        id='new-username'
         placeholder="Enter your username"
         onChange={({ target }) => setNewUsername(target.value)}
       ></input>
@@ -28,7 +28,7 @@ const RegisterNewUser = ({
         type="text"
         className="form-control"
         value={newName}
-        id="newName"
+        id='new-name'
         placeholder="Enter your name"
         onChange={({ target }) => setNewName(target.value)}
       ></input>
@@ -40,12 +40,12 @@ const RegisterNewUser = ({
         type="password"
         className="form-control"
         value={newPassword}
-        id="newPassword"
+        id='new-password'
         placeholder="Enter your password"
         onChange={({ target }) => setNewPassword(target.value)}
       ></input>
     </div>
-    <button type="submit" className="btn btn-primary margin-bottom-small margin-top-small">
+    <button type="submit" id='register-button' className="btn btn-primary margin-bottom-small margin-top-small">
       Register
     </button>
   </form>

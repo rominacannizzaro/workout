@@ -278,6 +278,7 @@ const App = () => {
               <b className="vertical-align-middle">{user.name}</b>
               <button
                 type="submit"
+                id='log-out-button'
                 className="btn btn-danger margin-left-small"
                 onClick={() => handleLogout()}
               >

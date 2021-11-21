@@ -8,7 +8,7 @@ const LoginForm = ({ handleLogin, username, setUsername, password, setPassword }
         type="text"
         className="form-control"
         value={username}
-        id="username"
+        id='username'
         placeholder="Enter your username"
         onChange={({ target }) => setUsername(target.value)}
       ></input>
@@ -16,15 +16,15 @@ const LoginForm = ({ handleLogin, username, setUsername, password, setPassword }
     <div className="form-group">
       <label htmlFor="password">Password</label>
       <input
-        type="password"
+        type='password'
         className="form-control"
         value={password}
-        id="Password"
+        id='password'
         placeholder="Enter your password"
         onChange={({ target }) => setPassword(target.value)}
       ></input>
     </div>
-    <button type="submit" className="btn btn-primary margin-bottom-small margin-top-small">
+    <button type="submit" id='login-button' className="btn btn-primary margin-bottom-small margin-top-small">
       Log in
     </button>
   </form>

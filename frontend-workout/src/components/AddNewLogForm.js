@@ -17,6 +17,7 @@ const AddNewLogForm = (props) => {
             onChange={props.handleNewDate}
             placeholder="Select date"
             type="date"
+            id='pickdate'
             style={props.searchInputStyle}
           />
           <i className="fas fa-calendar input-prefix"></i>
@@ -24,11 +25,12 @@ const AddNewLogForm = (props) => {
           <br></br>
           <label htmlFor="newWorkout">Workout description:</label>
           <input
+            id='workoutdescription'
             value={props.newWorkout}
             style={props.searchInputStyle}
             onChange={props.handleNewWorkout}
           />
-          <button type="submit" style={props.buttonStyle} className="btn btn-primary mb-2">
+          <button type="submit" id='add-button' style={props.buttonStyle} className="btn btn-primary mb-2">
             Add
           </button>
         </div>
