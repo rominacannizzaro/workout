@@ -1,7 +1,7 @@
 const Log = require('../models/log')
 const User = require('../models/user')
 
-const initialLogs = [
+const initialLogsWithNoUser = [
     {
         date: '2021-10-10',
         workout: 'Yoga'
@@ -31,7 +31,7 @@ const usersInDb = async () => {
 }
 
 module.exports = {
-    initialLogs, 
+    initialLogsWithNoUser,
     nonExistingId, 
     logsInDb,
     usersInDb,

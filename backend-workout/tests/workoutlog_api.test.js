@@ -7,33 +7,92 @@ const bcrypt = require('bcrypt')
 
 const Log = require('../models/log')
 const User = require('../models/user')
+const tokenUtils = require('../utils/tokenUtils')
+
+let authHeaderValue;
+const password = 'TestPassword';
+const name = 'TestUser';
+const username = 'TestUsername'
+
+let testUsersOwnLogs;
 
 beforeEach(async () => {
     await Log.deleteMany({})
-    await Log.insertMany(helper.initialLogs)
+    await User.deleteMany({})
+    await Log.insertMany(helper.initialLogsWithNoUser)
+    // Register a new user
+    const requestBody = {
+        newPassword: password,
+        newName: name,
+        newUsername: username
+    }
+    await api.post('/api/users').send(requestBody)
+    // Log new user in and get the credentials (bearer token)
+    let token;
+    await api.post('/api/login').send({
+        username,
+        password
+    }).then(response => {
+        token = response.body.token
+    })
+
+    authHeaderValue = 'bearer ' + token    
+    const user = await tokenUtils.getUserFromToken(token)
+
+    testUsersOwnLogs = [
+        {
+            date: '2021-10-10',
+            workout: 'PowerStep',
+            user: user._id
+        },
+        {
+            date: '2021-11-11',
+            workout: 'Marathon',
+            user: user._id
+        },
+    ]
+
+    // INSERT USER'S INITIAL LOGS
+    await Log.insertMany(testUsersOwnLogs)
   })
 
 describe('when there is initially some logs saved', () => {
     test('logs are returned as json', async () => {
-        console.log('entered test')
+        // Insert bearer token to request header
         await api
             .get('/api/logs')
+            .set('Authorization', authHeaderValue)
             .expect(200)
             .expect('Content-Type', /application\/json/)
     })
 
-    test('all logs are returned', async () => {
-        const response = await api.get('/api/logs')
+    test('two workout logs are returned for user', async () => {
+        
+        const response = await api
+                                .get('/api/logs')
+                                .set('Authorization', authHeaderValue)
+
     
-        expect(response.body).toHaveLength(helper.initialLogs.length)
+        expect(response.body).toHaveLength(testUsersOwnLogs.length)
     })
     
     test('a specific log is within the returned logs', async () => {
-        const response = await api.get('/api/logs')
+        const response = await api
+                                .get('/api/logs')
+                                .set('Authorization', authHeaderValue)
     
         const workouts = response.body.map(r => r.workout)
-        expect(workouts).toContain('Yoga')
-    })    
+        expect(workouts).toContain('PowerStep')
+    })
+
+    test('a log not belonging to the user is not within the returned logs', async () => {
+        const response = await api
+                                .get('/api/logs')
+                                .set('Authorization', authHeaderValue)
+    
+        const workouts = response.body.map(r => r.workout)
+        expect(workouts).not.toContain('Yoga')
+    })      
 })
 
 
@@ -78,11 +137,12 @@ describe('addition of a new log', () => {
         await api
             .post('/api/logs')
             .send(newLog)
+            .set('Authorization', authHeaderValue)
             .expect(200)
             .expect('Content-Type', /application\/json/)
         
         const logsAtEnd = await helper.logsInDb()
-        expect(logsAtEnd).toHaveLength(helper.initialLogs.length + 1)
+        expect(logsAtEnd).toHaveLength(testUsersOwnLogs.length + helper.initialLogsWithNoUser.length + 1)
     
         const workouts = logsAtEnd.map(l => l.workout)
         expect(workouts).toContain('Salsa class')
@@ -96,11 +156,12 @@ describe('addition of a new log', () => {
         await api   
             .post('/api/logs')
             .send(newLog)
+            .set('Authorization', authHeaderValue)
             .expect(400)
         
         const logsAtEnd = await helper.logsInDb()
     
-        expect(logsAtEnd).toHaveLength(helper.initialLogs.length)
+        expect(logsAtEnd).toHaveLength(testUsersOwnLogs.length + helper.initialLogsWithNoUser.length)
     })
 })
 
@@ -112,12 +173,13 @@ describe('deletion of a log', () => {
     
         await api
             .delete(`/api/logs/${logToDelete.id}`)
+            .set('Authorization', authHeaderValue)
             .expect(204)
     
         const logsAtEnd = await helper.logsInDb()
     
         expect(logsAtEnd).toHaveLength(
-            helper.initialLogs.length - 1
+            testUsersOwnLogs.length + helper.initialLogsWithNoUser.length - 1
         )
     
         const workouts = logsAtEnd.map(r => r.workout)
@@ -140,9 +202,9 @@ describe('when there is initially one user in db', () => {
         const usersAtStart = await helper.usersInDb()
 
         const newUser = {
-            username: 'mford',
-            name: 'Martin Ford',
-            password: 'salainen',
+            newUsername: 'mford',
+            newName: 'Martin Ford',
+            newPassword: 'salainen',
         }
 
         await api
@@ -155,16 +217,16 @@ describe('when there is initially one user in db', () => {
         expect(usersAtEnd).toHaveLength(usersAtStart.length + 1)
 
         const usernames = usersAtEnd.map(u => u.username)
-        expect(usernames).toContain(newUser.username)
+        expect(usernames).toContain(newUser.newUsername)
     })
 
     test('creation fails with proper status code and message if username is already taken', async () => {
         const usersAtStart = await helper.usersInDb()
 
         const newUser = {
-            username: 'root',
-            name: 'Superuser',
-            password: 'salainen'
+            newUsername: 'root',
+            newName: 'Superuser',
+            newPassword: 'salainen'
         }
 
         const result = await api

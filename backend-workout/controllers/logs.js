@@ -1,31 +1,25 @@
 const logsRouter = require('express').Router()
 const Log = require('../models/log')
-const User = require('../models/user')
-const jwt = require('jsonwebtoken')
+const tokenUtils = require('../utils/tokenUtils')
 
 const getTokenFromRequest = request => {
   const authorization = request.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-  return authorization.substring(7)
+    return authorization.substring(7)
   }
   return null
 }
 
 const getUserFromRequest = async (request) => {
-  const token = await getTokenFromRequest(request)  
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-  if (!token || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
-  }
-  const user = await User.findById(decodedToken.id)
-  return user
+  const token = await getTokenFromRequest(request)
+  return await tokenUtils.getUserFromToken(token);  
 }
 
 logsRouter.get('/', async (request, response) => {
   const user = await getUserFromRequest(request)
   const loggedInUserLogs = await Log.find({ "user": {_id: user._id }})
   response.json(loggedInUserLogs)
-  })
+})
 
 logsRouter.get('/:id', async (request, response) => {
   const log = await Log.findById(request.params.id)
