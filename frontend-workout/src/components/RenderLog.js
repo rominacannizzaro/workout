@@ -1,12 +1,21 @@
-import React from 'react'
+import React from 'react';
 
 const RenderLog = ({ log, handleDeleteButton }) => {
-   return (
-     <li>
-       Date: {log.date} -  Workout: {log.workout} 
-       <button id={log.id} date={log.date} onClick={handleDeleteButton}>Delete</button>
+  return (
+    <li className="margin-bottom-small">
+      <span className="vertical-align-middle">
+        Date: {log.date} - Workout: {log.workout}
+      </span>
+      <button
+        id={log.id}
+        date={log.date}
+        className="btn btn-sm btn-outline-secondary margin-left-small"
+        onClick={handleDeleteButton}
+      >
+        Delete
+      </button>
     </li>
-   )
-}
+  );
+};
 
-export default RenderLog
+export default RenderLog;

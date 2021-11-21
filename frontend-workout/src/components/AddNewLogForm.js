@@ -1,36 +1,43 @@
-import React from 'react'
+import React from 'react';
 
+const AddNewLogForm = (props) => {
+  const renderLogsResultsText = () =>
+    props.listOfLogs.length === 0
+      ? 'No logs to show. You have not created any logs yet.'
+      : 'Your logs:';
 
-const AddNewLogForm = ( props ) => {
-  const renderLogsResultsText = () => props.listOfLogs.length === 0 ? 'No logs to show. You have not created any logs yet.' : 'Your logs:'
-
-    return (
-      <div>
-        <form onSubmit={props.addLog}>
-          <div className="md-form md-outline input-with-post-icon datepicker" inline="true">
-            Date: <input 
-              value={props.newDate} 
-              onChange={props.handleNewDate}
-              placeholder="Select date" 
-              type="date" 
-              className="form-control"></input>
-            <label htmlFor="example">Pick a date...</label>
-            <i className="fas fa-calendar input-prefix"></i>
-          </div>
+  return (
+    <div>
+      <h3 className="bordered-heading">Add a new workout log:</h3>
+      <form className="form-inline" onSubmit={props.addLog}>
+        <div className="form-group mx-sm-3 mb-2">
+          <label htmlFor="pickDate">Pick a date: </label>
+          <input
+            value={props.newDate}
+            onChange={props.handleNewDate}
+            placeholder="Select date"
+            type="date"
+            style={props.searchInputStyle}
+          />
+          <i className="fas fa-calendar input-prefix"></i>
           <br></br>
-          <div>
-            Workout description: <input 
-              value={props.newWorkout}
-              onChange={props.handleNewWorkout}
-            />
-          </div>
           <br></br>
-          <button type="submit">Add</button>
-        </form>
-        <br></br>
-        <h4>{renderLogsResultsText()}</h4>
-      </div>
-    )
-}
+          <label htmlFor="newWorkout">Workout description:</label>
+          <input
+            value={props.newWorkout}
+            style={props.searchInputStyle}
+            onChange={props.handleNewWorkout}
+          />
+          <button type="submit" style={props.buttonStyle} className="btn btn-primary mb-2">
+            Add
+          </button>
+        </div>
+      </form>
+      <br></br>
+      <h3 className="bordered-heading">{renderLogsResultsText()}</h3>
+      <br></br>
+    </div>
+  );
+};
 
-export default AddNewLogForm
+export default AddNewLogForm;
