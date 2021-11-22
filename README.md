@@ -17,10 +17,13 @@ In order to avoid hardcoding the address of the database in the source code, the
 ## Starting the app
 
 In the backend:
+
 -In development mode (with hot reload): `npm run dev`
+
 -In normal mode ( = production mode, no hot reload): `npm start`
 
 In the frontend:
+
 -In development mode (with hot reload): `npm start`
 
 ## Running the tests
