@@ -1,6 +1,6 @@
 # Workout Log App
 
-This is a full stack CRUD application developed using React, JavaScript, HTML, Express, Axios, MongoDB Atlas and Mongoose.
+This is a full stack CRUD application developed using React, JavaScript, HTML, Bootstrap, CSS, Express, Axios, MongoDB Atlas and Mongoose.
 
 ## Description
 
