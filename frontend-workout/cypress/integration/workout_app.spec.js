@@ -40,9 +40,7 @@ describe('Workout log app', function() {
     
       describe('when logged in', function() {
         beforeEach(function() {
-            cy.get('#username').type('yodaiam')
-            cy.get('#password').type('doordonot')
-            cy.get('#login-button').click()
+          cy.login({ username: 'yodaiam', password: 'doordonot' })
         })
     
         it('a new workout log can be created', function() {
