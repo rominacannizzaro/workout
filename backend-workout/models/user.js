@@ -5,15 +5,19 @@ const userSchema = new mongoose.Schema({
     username: {
         type: String,
         unique: true,
+        required: [true, 'A username name is required'],
         minLength: 4,
         maxLength: 15
     },
     name: {
         type: String,
+        required: [true, 'A name is required'],
         minLength: 4,
         maxLength: 15
     },
-    passwordHash: String,
+    passwordHash: {
+        type: String
+    },
     logs: [
         {
             type: mongoose.Schema.Types.ObjectId,
