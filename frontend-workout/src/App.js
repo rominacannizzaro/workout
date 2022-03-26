@@ -54,7 +54,7 @@ const App = () => {
           setNotification(errorMessageValidation);
           setTimeout(() => {
             setNotification(null);
-          }, 4000);
+          }, 3000);
         });
     }
   }, [user]);
@@ -77,7 +77,7 @@ const App = () => {
       return wantedId;
     };
 
-    if (checkDate === false) {
+    if (checkDate === false && newWorkout !== '') {
       if (
         window.confirm(
           `A workout log has already been added with this date: ${newDate}. Replace the old log with a new one?`
@@ -98,7 +98,7 @@ const App = () => {
             setNotification(`The log with the date " ${newDate} " was updated.`);
             setTimeout(() => {
               setNotification(null);
-            }, 5000);
+            }, 3000);
           })
           .catch((error) => {
             console.log(error);
@@ -107,7 +107,7 @@ const App = () => {
             setNotification(errorMessage);
             setTimeout(() => {
               setNotification(null);
-            }, 4000);
+            }, 3000);
           });
       }
     } else if (checkDate === true) {
@@ -120,7 +120,7 @@ const App = () => {
           setNotification(`A workout log for the date " ${newDate} " was created.`);
           setTimeout(() => {
             setNotification(null);
-          }, 5000);
+          }, 3000);
         })
         .catch((error) => {
           console.log(error.response.data);
@@ -129,7 +129,7 @@ const App = () => {
           setNotification(errorMessageValidation);
           setTimeout(() => {
             setNotification(null);
-          }, 4000);
+          }, 3000);
         });
     }
   };
@@ -175,15 +175,17 @@ const App = () => {
       setUsername('');
       setPassword('');
     } catch (exception) {
-      setNotification('Wrong credentials');
+      setNotification('Wrong credentials.');
       setTimeout(() => {
         setNotification(null);
-      }, 5000);
+      }, 3000);
     }
   };
 
   const handleRegisterNewUser = async (event) => {
     event.preventDefault();
+    
+    if (newUsername !== '' && newName !== '' && newPassword !== '') { 
 
     try {
       const user = await registrationService.register({
@@ -192,7 +194,7 @@ const App = () => {
         newPassword
       });
 
-      setNotification('You have successfully registered! Please, log in.');
+      setNotification('You have successfully registered! You can now log in.');
       setTimeout(() => {
         setNotification(null);
       }, 3000);
@@ -211,6 +213,7 @@ const App = () => {
         setNotification(null);
       }, 4000);
     }
+  }
   };
 
   const handleLogout = () => {
