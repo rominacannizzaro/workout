@@ -13,7 +13,11 @@ const Notification = ({ message }) => {
     return <div className="errornotification">{message}</div>;
   } else if (message.includes('expired')) {
     return <div className="errornotification">{message}</div>;
-  }
+  } else if (message.includes('malformatted')) {
+    return <div className="errornotification">{message}</div>;
+  } else if (message.includes('Please')) {
+    return <div className="errornotification">{message}</div>;
+  } 
   return <div className="successnotification">{message}</div>;
 };
 
