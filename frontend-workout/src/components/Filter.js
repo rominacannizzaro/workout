@@ -13,9 +13,6 @@ const Filter = (props) => {
             onChange={props.handleNewSearch}
           >
           </input>
-          <button type="submit" style={props.buttonStyle} className="btn btn-primary mb-2">
-            Search
-          </button>
         </div>
       </form>
     </div>
