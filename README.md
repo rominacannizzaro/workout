@@ -3,6 +3,8 @@
 This is a full stack CRUD application developed using React, JavaScript, HTML,  
 Bootstrap, Express, Axios, MongoDB Atlas and Mongoose.
 
+Demo: https://workout-demo.rcsoftdev.com/
+
 ## Description
 
 This is an app for keeping track of workouts. In this app, the user can  
