@@ -1,0 +1,23 @@
+version: '3'
+services:
+  backend:
+    build:
+      context: ./backend-workout
+      dockerfile: ./Dockerfile
+    image: backend
+    ports:
+      - "3001:3001"
+    environment:
+      - MONGODB_URI=
+      - SECRET=
+      - HOST=localhost
+      - PORT=3001
+  frontend:
+    build:
+      context: ./frontend-workout
+      dockerfile: ./Dockerfile
+    image: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
