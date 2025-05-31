@@ -30,7 +30,7 @@ const AddNewLogForm = (props) => {
             style={props.searchInputStyle}
             onChange={props.handleNewWorkout}
           />
-          <button type="submit" id='add-button' style={props.buttonStyle} className="btn btn-primary mb-2">
+          <button type="submit" id='add-button' style={props.buttonStyle} className="btn btn-primary mb-2 mt-2 mt-md-0">
             Add
           </button>
         </div>

@@ -11,6 +11,7 @@ const Filter = (props) => {
             value={props.newSearch}
             style={props.searchInputStyle}
             onChange={props.handleNewSearch}
+            className="ml-0 ml-sm-3"
           >
           </input>
         </div>

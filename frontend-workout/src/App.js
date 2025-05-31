@@ -226,7 +226,7 @@ const App = () => {
 
   const buttonStyle = {
     marginBottom: 20,
-    marginLeft: 20
+    marginLeft: 15
   };
 
   const searchInputStyle = {

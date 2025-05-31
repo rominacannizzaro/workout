@@ -9,7 +9,7 @@ const RenderLog = ({ log, handleDeleteButton }) => {
       <button
         id={log.id}
         date={log.date}
-        className="btn btn-sm btn-outline-secondary margin-left-small"
+        className="btn btn-sm btn-outline-secondary d-block d-md-inline-block ms-md-3 mt-2 mt-md-0"
         onClick={handleDeleteButton}
       >
         Delete
